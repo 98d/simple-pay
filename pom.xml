@@ -26,7 +26,6 @@
     <modules>
         <module>simple-pay-helper</module>
         <module>simple-pay-spring-boot-starter</module>
-        <module>simple-example</module>
     </modules>
 
     <properties>
