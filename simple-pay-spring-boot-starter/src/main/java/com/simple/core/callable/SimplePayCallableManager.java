@@ -17,13 +17,13 @@ public class SimplePayCallableManager implements SimplePayCallable{
 
     private static final Logger logger = LoggerFactory.getLogger(SimplePayCallableManager.class);
 
-    private Map<String, SimplePayCallable> callbackMap = new ConcurrentHashMap<>();
+    private final Map<String, SimplePayCallable> callbackMap = new ConcurrentHashMap<>();
 
     public void register(String busCode, SimplePayCallable callback){
-        if(callbackMap.containsKey(callback)){
+        if(callbackMap.containsKey(busCode)){
             throw new IllegalArgumentException(String.format("busCode [%s] already exists",busCode));
         }
-        logger.info("{} register success suffix {}",callback.getClass().getName(),busCode);
+        logger.info("{} register success busCode:{}",callback.getClass().getName(),busCode);
         callbackMap.put(busCode,callback);
     }
 
