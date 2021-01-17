@@ -49,7 +49,7 @@ public class SimplePayTemplate implements SimplePayOps{
     }
 
     @Override
-    public SimplePay getWeChatPay(String terminal){
+    public SimplePay getWechatPay(String terminal){
         return getSimplePay(PayMethod.WECHAT,terminal);
     }
 

@@ -1,4 +1,4 @@
-package com.simple.core.callable;
+package com.simple.callable;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

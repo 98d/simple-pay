@@ -23,7 +23,7 @@ public interface SimplePayOps {
     SimplePay getSimplePay(PayMethod method, String terminal);
 
 
-    SimplePay getWeChatPay(String terminal);
+    SimplePay getWechatPay(String terminal);
 
 
     SimplePay getAliPay(String terminal);

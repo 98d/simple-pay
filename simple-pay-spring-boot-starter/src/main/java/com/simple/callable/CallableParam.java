@@ -1,4 +1,4 @@
-package com.simple.core.callable;
+package com.simple.callable;
 
 /**
  * Created by Jin.Z.J  2020/11/26
