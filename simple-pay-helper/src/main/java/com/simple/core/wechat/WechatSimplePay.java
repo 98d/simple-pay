@@ -12,8 +12,8 @@ import com.simple.param.SimplePayParam;
 import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
 import com.simple.exception.SimplePayException;
 import com.simple.utils.BeanUtils;
+import com.simple.utils.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -50,13 +50,13 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
         Map<String,Object> beanMap = getBizContent(payParam);
         Long orderId = (Long)beanMap.remove("order_id");
         String outTradeNo = (String)beanMap.get("out_trade_no");
-        if(StringUtils.isBlank(outTradeNo)){
+        if(StringUtils.isEmpty(outTradeNo)){
             throw new SimplePayException("out_trade_no can not be null");
         }
         String notifyUrl = (String)beanMap.get("notify_url");
-        if(StringUtils.isBlank(notifyUrl)){
+        if(StringUtils.isEmpty(notifyUrl)){
             notifyUrl = this.getConfig().getNotifyUrl();
-            if(StringUtils.isNotBlank(notifyUrl)){
+            if(StringUtils.isNotEmpty(notifyUrl)){
                 beanMap.put("notify_url",notifyUrl);
             }
         }

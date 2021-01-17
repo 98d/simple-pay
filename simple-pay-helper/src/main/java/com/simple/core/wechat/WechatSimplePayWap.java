@@ -4,7 +4,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.simple.param.SimplePayParam;
 import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
 import com.simple.exception.SimplePayException;
-import org.apache.commons.lang3.StringUtils;
+import com.simple.utils.StringUtils;
 
 import java.net.URLEncoder;
 
@@ -32,8 +32,8 @@ public class WechatSimplePayWap extends WechatSimplePay {
             paramMap.remove("openid");
         });
         if(result.isSuccess()){
-            if(StringUtils.isNotBlank(result.getMweb_url())){
-                if(StringUtils.isNotBlank(redirect_url)){
+            if(StringUtils.isNotEmpty(result.getMweb_url())){
+                if(StringUtils.isNotEmpty(redirect_url)){
                     try{
                         result.setMweb_url(result.getMweb_url() + "&redirect_url="+ URLEncoder.encode(redirect_url,"UTF-8"));
                     }catch (Exception e){

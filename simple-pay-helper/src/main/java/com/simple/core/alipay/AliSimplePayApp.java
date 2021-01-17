@@ -5,10 +5,10 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.simple.exception.SimplePayException;
 import com.simple.param.SimplePayParam;
 import com.simple.result.alipay.AliPayUnifiedOrderResult;
-import com.simple.exception.SimplePayException;
-import org.apache.commons.lang3.StringUtils;
+import com.simple.utils.StringUtils;
 
 import java.util.Map;
 
@@ -40,7 +40,7 @@ public class AliSimplePayApp extends AliSimplePay {
         //订单号
         String orderNo = (String) map.get("out_trade_no");
         String notifyUrl = (String) map.remove("notify_url");
-        if(StringUtils.isBlank(notifyUrl)){
+        if(StringUtils.isEmpty(notifyUrl)){
             notifyUrl = this.notifyUrl;
         }
         try{
