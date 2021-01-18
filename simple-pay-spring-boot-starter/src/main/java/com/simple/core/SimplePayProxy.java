@@ -4,6 +4,9 @@ import com.simple.param.SimplePayParam;
 import com.simple.enums.PayMethod;
 import com.simple.exception.SimplePayException;
 
+/**
+ * 支付代理
+ */
 public class SimplePayProxy implements SimplePay {
 
     private String terminal;

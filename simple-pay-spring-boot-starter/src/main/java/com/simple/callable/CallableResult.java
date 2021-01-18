@@ -1,11 +1,17 @@
 package com.simple.callable;
 
 /**
+ * 回调业务结果
  * Created by Jin.Z.J  2020/11/26
  */
 public class CallableResult {
-
+    /**
+     * 业务结果
+     */
     private boolean success;
+    /**
+     * 其他业务数据
+     */
     private Object data;
 
     public CallableResult(boolean success) {

@@ -1,11 +1,17 @@
 package com.simple.callable;
 
 /**
+ * 回调业务参数
  * Created by Jin.Z.J  2020/11/26
  */
 public class CallableParam{
-    //原参数
+    /**
+     * 订单号
+     */
     private String orderNo;
+    /**
+     * 其他业务数据
+     */
     private Object data;
 
     public CallableParam(String orderNo) {

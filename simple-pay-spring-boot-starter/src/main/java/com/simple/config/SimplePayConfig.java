@@ -6,10 +6,13 @@ import com.simple.core.wechat.WechatSimplePayConfig;
 import com.simple.utils.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
+ * 支付相关配置类
  * Created by Jin.Z.J  2020/11/26
  */
+@Configuration
 @ConfigurationProperties(prefix = "simple-pay")
 public class SimplePayConfig {
 
@@ -17,11 +20,11 @@ public class SimplePayConfig {
     private String notifyUrl;
     //统一退款回调地址
     private String refundNotifyUrl;
-
+    //h5重定向跳转地址
     private String redirectUrl;
-
+    //微信支付相关配置
     private final WeChatPayConfig wechatPay = new WeChatPayConfig();
-
+    //支付宝相关配置
     private final AliPayConfig alipay = new AliPayConfig();
 
 

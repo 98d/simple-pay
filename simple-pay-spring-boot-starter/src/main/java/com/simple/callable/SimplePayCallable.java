@@ -8,12 +8,28 @@ import com.simple.exception.SimplePayException;
 public interface SimplePayCallable{
 
 
+    /**
+     * 支付回调所触发的方法
+     * @param callableParam
+     * @return
+     * @throws SimplePayException
+     */
     CallableResult payCall(CallableParam callableParam) throws SimplePayException;
 
-
+    /**
+     * 退款回调所触发的方法
+     * @param callableParam
+     * @return
+     * @throws SimplePayException
+     */
     CallableResult refundCall(CallableParam callableParam) throws SimplePayException;
 
-
+    /**
+     * 交易查询所触发的方法
+     * @param callableParam
+     * @return
+     * @throws SimplePayException
+     */
     CallableResult queryTrade(CallableParam callableParam) throws SimplePayException;
 
 }

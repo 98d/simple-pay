@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
+ * 支付模板
  * Created by Jin.Z.J  2020/11/26
  */
 @Component
