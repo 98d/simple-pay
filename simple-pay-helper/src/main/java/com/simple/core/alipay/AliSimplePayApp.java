@@ -17,19 +17,14 @@ import java.util.Map;
  */
 public class AliSimplePayApp extends AliSimplePay {
 
-
     private AlipayClient alipayClient;
 
-    private String notifyUrl;
+    private AliSimplePayConfig config;
 
-    public AliSimplePayApp(AlipayClient alipayClient) {
-        super(alipayClient);
+    public AliSimplePayApp(AlipayClient alipayClient,AliSimplePayConfig config) {
+        super(alipayClient,config);
         this.alipayClient = alipayClient;
-    }
-
-    public AliSimplePayApp(AlipayClient alipayClient, String notifyUrl) {
-        this(alipayClient);
-        this.notifyUrl = notifyUrl;
+        this.config = config;
     }
 
     @Override
@@ -41,7 +36,7 @@ public class AliSimplePayApp extends AliSimplePay {
         String orderNo = (String) map.get("out_trade_no");
         String notifyUrl = (String) map.remove("notify_url");
         if(StringUtils.isEmpty(notifyUrl)){
-            notifyUrl = this.notifyUrl;
+            notifyUrl = this.config.getNotifyUrl();
         }
         try{
             AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
@@ -54,7 +49,7 @@ public class AliSimplePayApp extends AliSimplePay {
             result.setOrderId(orderId);
             return (R) result;
         }catch (AlipayApiException e){
-            throw new SimplePayException(e.getErrCode() + ":" + e.getErrCode());
+            throw new SimplePayException(e.getErrCode() + ":" + e.getErrMsg());
         }
     }
 

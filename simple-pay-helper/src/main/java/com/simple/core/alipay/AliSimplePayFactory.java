@@ -21,7 +21,8 @@ public class AliSimplePayFactory extends SimplePaySingleFactory {
 
     private String appId;
 
-    private String notifyUrl;
+    private AliSimplePayConfig config;
+
 
     public AliSimplePayFactory(AliSimplePayConfig config) {
         this.appId = config.getAppId();
@@ -32,7 +33,7 @@ public class AliSimplePayFactory extends SimplePaySingleFactory {
                 , "UTF-8"
                 ,config.getAliPayPublicKey()
                 , ALIPAY_SIGN_TYPE);
-        this.notifyUrl = config.getNotifyUrl();
+        this.config = config;
     }
 
 
@@ -44,11 +45,11 @@ public class AliSimplePayFactory extends SimplePaySingleFactory {
     @Override
     protected SimplePay createSimplePay(String terminal) {
         if(terminal.equalsIgnoreCase(TerminalConst.APP)){
-            return new AliSimplePayApp(this.alipayClient,this.notifyUrl);
+            return new AliSimplePayApp(this.alipayClient,this.config);
         }else if(terminal.equalsIgnoreCase(TerminalConst.H5)){
-            return new AliSimplePayWap(alipayClient,this.notifyUrl);
+            return new AliSimplePayWap(alipayClient,this.config);
         }else if(terminal.equalsIgnoreCase(TerminalConst.PC)){
-            return new AliSimplePayPc(this.alipayClient,this.notifyUrl);
+            return new AliSimplePayPc(this.alipayClient,this.config);
         }else{
             return null;
         }

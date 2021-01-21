@@ -1,19 +1,19 @@
 package com.simple.core.wechat;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.*;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.XmlUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.simple.core.AbstractSimplePay;
-import com.simple.param.SimplePayParam;
-import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
 import com.simple.exception.SimplePayException;
+import com.simple.param.SimplePayParam;
+import com.simple.param.SimplePays;
+import com.simple.param.wechatpay.WechatPayRefundParam;
+import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
 import com.simple.utils.BeanUtils;
 import com.simple.utils.StringUtils;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -184,6 +184,10 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
         map.put("mch_id",mchid);
         map.put("nonce_str", IdUtil.simpleUUID());
         map.put("sign", getSign(param));
+        String notify_url = (String)map.get("notify_url");
+        if(StringUtils.isEmpty(notify_url)){
+            map.put("notify_url",this.getConfig().getRefundNotifyUrl());
+        }
         SSLConnectionSocketFactory ssl;
         try(InputStream inputStream = new FileInputStream(this.getConfig().getPk12Path())){
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
@@ -218,19 +222,8 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
     protected abstract WechatSimplePayConfig getConfig();
 
 
-
     protected <T> String getSign(T bean) {
-        Map<String,Object> paramMap;
-        if(bean instanceof Map){
-            paramMap = (Map<String,Object>)bean;
-        }else{
-            paramMap = BeanUtil.beanToMap(bean);
-        }
-        String str = MapUtil.sortJoin(paramMap,"&","=",true,null);
-        StringBuilder sb = new StringBuilder(str).append("&key=").append(this.getConfig().getSignKey());
-        String sign = DigestUtils.md5Hex(sb.toString()).toUpperCase();
-        return sign;
-
+        return SimplePays.WeChat.getSign(bean,this.getConfig().getSignKey());
     }
 
 

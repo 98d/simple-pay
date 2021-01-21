@@ -19,17 +19,14 @@ public class AliSimplePayWap extends AliSimplePay {
 
     private AlipayClient alipayClient;
 
-    private String notifyUrl;
+    private AliSimplePayConfig config;
 
-    public AliSimplePayWap(AlipayClient alipayClient) {
-        super(alipayClient);
+    public AliSimplePayWap(AlipayClient alipayClient,AliSimplePayConfig config) {
+        super(alipayClient,config);
         this.alipayClient = alipayClient;
+        this.config = config;
     }
 
-    public AliSimplePayWap(AlipayClient alipayClient, String notifyUrl) {
-        this(alipayClient);
-        this.notifyUrl = notifyUrl;
-    }
 
     @Override
     public <R> R unifiedOrder(SimplePayParam<R> param) throws SimplePayException {
@@ -40,8 +37,11 @@ public class AliSimplePayWap extends AliSimplePay {
         String orderNo = (String) map.get("out_trade_no");
         String returnUrl = (String) map.remove("return_url");
         String notifyUrl = (String) map.remove("notify_url");
+        if(StringUtils.isEmpty(returnUrl)){
+            returnUrl = this.config.getRedirectUrl();
+        }
         if(StringUtils.isEmpty(notifyUrl)){
-            notifyUrl = this.notifyUrl;
+            notifyUrl = this.config.getNotifyUrl();
         }
         AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
         request.setNotifyUrl(notifyUrl);

@@ -19,15 +19,12 @@ public class AliSimplePayPc extends AliSimplePay {
 
     private AlipayClient alipayClient;
 
-    private String notifyUrl;
+    private AliSimplePayConfig config;
 
-    public AliSimplePayPc(AlipayClient alipayClient) {
-        super(alipayClient);
+    public AliSimplePayPc(AlipayClient alipayClient,AliSimplePayConfig config) {
+        super(alipayClient,config);
         this.alipayClient = alipayClient;
-    }
-    public AliSimplePayPc(AlipayClient alipayClient, String notifyUrl) {
-        this(alipayClient);
-        this.notifyUrl = notifyUrl;
+        this.config = config;
     }
 
 
@@ -41,7 +38,7 @@ public class AliSimplePayPc extends AliSimplePay {
         //回调通知地址
         String notifyUrl = (String) map.remove("notify_url");
         if(StringUtils.isEmpty(notifyUrl)){
-            notifyUrl = this.notifyUrl;
+            notifyUrl = this.config.getNotifyUrl();
         }
         //回调页面
         String returnUrl = (String) map.remove("return_url");

@@ -24,8 +24,11 @@ public abstract class AliSimplePay extends AbstractSimplePay {
 
     private AlipayClient alipayClient;
 
-    public AliSimplePay(AlipayClient alipayClient) {
+    private AliSimplePayConfig config;
+
+    public AliSimplePay(AlipayClient alipayClient,AliSimplePayConfig config) {
         this.alipayClient = alipayClient;
+        this.config = config;
     }
 
 
