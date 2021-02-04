@@ -39,7 +39,7 @@ public class AliSimplePayFactory extends SimplePaySingleFactory {
 
     @Override
     protected String getKey(String terminal) {
-        return this.appId + "-" + terminal;
+        return terminal + "-" + this.appId;
     }
 
     @Override

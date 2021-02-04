@@ -18,11 +18,13 @@ public class WechatSimplePayFactory extends SimplePaySingleFactory {
 
     @Override
     protected String getKey(String terminal) {
+        StringBuilder builder = new StringBuilder(terminal);
         if(terminal.equals(TerminalConst.APP)){
-            return terminal + "-" + config.getWppAppId();
+            builder.append("-").append(config.getWppAppId()).append("-").append(config.getMchid());
         }else{
-            return terminal + "-" + config.getWoaAppId();
+            builder.append("-").append(config.getWoaAppId()).append("-").append(config.getMchid());
         }
+        return builder.toString();
     }
 
     //支付宝/app/h5
