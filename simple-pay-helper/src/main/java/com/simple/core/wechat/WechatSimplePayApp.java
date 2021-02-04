@@ -2,7 +2,7 @@ package com.simple.core.wechat;
 
 import cn.hutool.core.util.IdUtil;
 import com.simple.param.SimplePayParam;
-import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
+import com.simple.result.wechatpay.WechatUnifiedOrderResult;
 import com.simple.exception.SimplePayException;
 
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class WechatSimplePayApp extends WechatSimplePay {
     @Override
     public <R> R unifiedOrder(SimplePayParam<R> param) throws SimplePayException {
 
-        WeChatUnifiedOrderResult result = super.submitUnifiedOrder(param,(beanMap) -> {
+        WechatUnifiedOrderResult result = super.submitUnifiedOrder(param,(beanMap) -> {
             beanMap.put("appid",this.appId());
             beanMap.put("mch_id",this.config.getMchid());
             beanMap.put("trade_type",TRADE_TYPE);
@@ -50,7 +50,7 @@ public class WechatSimplePayApp extends WechatSimplePay {
     }
 
 
-    private String getSign(WeChatUnifiedOrderResult result,long timestamp,String nonceStr,String pkg){
+    private String getSign(WechatUnifiedOrderResult result, long timestamp, String nonceStr, String pkg){
         Map<String,Object> signMap = new HashMap<>();
         signMap.put("appid",result.getAppid());
         signMap.put("timestamp",timestamp);

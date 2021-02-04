@@ -2,7 +2,7 @@ package com.simple.core.wechat;
 
 import cn.hutool.core.util.IdUtil;
 import com.simple.param.SimplePayParam;
-import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
+import com.simple.result.wechatpay.WechatUnifiedOrderResult;
 import com.simple.exception.SimplePayException;
 import com.simple.utils.StringUtils;
 
@@ -26,7 +26,7 @@ public class WechatSimplePayWoa extends WechatSimplePay {
     @Override
     public <R> R unifiedOrder(SimplePayParam<R> param) throws SimplePayException {
 
-        WeChatUnifiedOrderResult result = super.submitUnifiedOrder(param, paramMap -> {
+        WechatUnifiedOrderResult result = super.submitUnifiedOrder(param, paramMap -> {
             String openId = (String)paramMap.get("openid");
             if(StringUtils.isEmpty(openId)){
                 throw new SimplePayException("param [openid] Can not be empty");

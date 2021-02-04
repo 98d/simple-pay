@@ -2,7 +2,7 @@ package com.simple.param.wechatpay;
 
 
 import com.simple.annotation.Exclude;
-import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
+import com.simple.result.wechatpay.WechatUnifiedOrderResult;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 微信支付统一下单参数类
  * Created by Jin.Z.J  2020/11/25
  */
-public class WechatPayUnifiedOrderParam extends WechatAbstractSimplePayParam<WeChatUnifiedOrderResult> implements Serializable{
+public class WechatPayUnifiedOrderParam extends WechatAbstractSimplePayParam<WechatUnifiedOrderResult> implements Serializable{
 
     private static final String URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
@@ -207,8 +207,8 @@ public class WechatPayUnifiedOrderParam extends WechatAbstractSimplePayParam<WeC
     }
 
     @Override
-    public Class<WeChatUnifiedOrderResult> resClass() {
-        return WeChatUnifiedOrderResult.class;
+    public Class<WechatUnifiedOrderResult> resClass() {
+        return WechatUnifiedOrderResult.class;
     }
 
     public String getRedirect_url() {

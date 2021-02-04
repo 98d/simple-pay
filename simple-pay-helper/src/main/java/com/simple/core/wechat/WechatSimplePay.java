@@ -10,8 +10,7 @@ import com.simple.core.AbstractSimplePay;
 import com.simple.exception.SimplePayException;
 import com.simple.param.SimplePayParam;
 import com.simple.param.SimplePays;
-import com.simple.param.wechatpay.WechatPayRefundParam;
-import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
+import com.simple.result.wechatpay.WechatUnifiedOrderResult;
 import com.simple.utils.BeanUtils;
 import com.simple.utils.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -46,7 +45,7 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
     }
 
 
-    protected <R> WeChatUnifiedOrderResult submitUnifiedOrder(SimplePayParam<R> payParam, Consumer consumer) throws SimplePayException{
+    protected <R> WechatUnifiedOrderResult submitUnifiedOrder(SimplePayParam<R> payParam, Consumer consumer) throws SimplePayException{
         Map<String,Object> beanMap = getBizContent(payParam);
         Long orderId = (Long)beanMap.remove("order_id");
         String outTradeNo = (String)beanMap.get("out_trade_no");
@@ -65,7 +64,7 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
         beanMap.put("sign",this.getSign(beanMap));
         String str = this.submitPost(payParam.requestURI(),beanMap);
         try{
-            WeChatUnifiedOrderResult result = xmlParseObject(str, WeChatUnifiedOrderResult.class);
+            WechatUnifiedOrderResult result = xmlParseObject(str, WechatUnifiedOrderResult.class);
             if(result.isSuccess()){
                 Map<String,Object> resMap = new HashMap<>();
                 resMap.put("order_id",orderId);

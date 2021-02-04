@@ -4,7 +4,7 @@ import com.simple.result.SimplePayResult;
 
 import java.io.Serializable;
 
-public class WeChatUnifiedOrderResult extends WechatPayBaseResult implements SimplePayResult,Serializable{
+public class WechatUnifiedOrderResult extends WechatPayBaseResult implements SimplePayResult,Serializable{
 
     private String return_code; //SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
     private String return_msg; //返回信息，如非空，为错误原因签名失败参数格式校验错误

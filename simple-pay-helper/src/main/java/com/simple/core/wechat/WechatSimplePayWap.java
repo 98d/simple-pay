@@ -2,7 +2,7 @@ package com.simple.core.wechat;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.simple.param.SimplePayParam;
-import com.simple.result.wechatpay.WeChatUnifiedOrderResult;
+import com.simple.result.wechatpay.WechatUnifiedOrderResult;
 import com.simple.exception.SimplePayException;
 import com.simple.utils.StringUtils;
 
@@ -25,7 +25,7 @@ public class WechatSimplePayWap extends WechatSimplePay {
     @Override
     public <R> R unifiedOrder(SimplePayParam<R> param) throws SimplePayException {
         String redirect_url = (String) ReflectUtil.getFieldValue(param,"redirect_url");
-        WeChatUnifiedOrderResult result = super.submitUnifiedOrder(param,(paramMap) -> {
+        WechatUnifiedOrderResult result = super.submitUnifiedOrder(param,(paramMap) -> {
             paramMap.put("appid",this.appId());
             paramMap.put("mch_id",config.getMchid());
             paramMap.put("trade_type",TRADE_TYPE);
