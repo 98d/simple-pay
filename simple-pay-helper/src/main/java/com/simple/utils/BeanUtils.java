@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * bean 工具类
@@ -25,7 +26,7 @@ public class BeanUtils {
 
     private static final Map<Class,List<BeanProp>> cache = new ConcurrentHashMap<>();
 
-    private static class BeanProp{
+    public static class BeanProp{
 
         private Field field;
         private Method getter;
@@ -195,6 +196,14 @@ public class BeanUtils {
         }
     }
 
+
+    public static <T> void foreach(Class<T> clazz, Consumer<BeanProp> biConsumer){
+        Objects.requireNonNull(clazz);
+        List<BeanProp> beanProps = getBeanProp(clazz);
+        for (BeanProp prop : beanProps) {
+            biConsumer.accept(prop);
+        }
+    }
 
 
 

@@ -1,7 +1,7 @@
 package com.simple.core;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.simple.param.SimplePayParam;
+import com.simple.utils.BeanUtils;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ public abstract class AbstractSimplePay implements SimplePay{
      * @return
      */
     protected Map<String,Object> getBizContent(SimplePayParam<?> param){
-        Map<String, Object> map = BeanUtil.beanToMap(param);
+        Map<String, Object> map = BeanUtils.beanToMap(param);
         Map<String,Object> params = (Map<String,Object>)map.remove("otherParam");
         if(params != null && !params.isEmpty()){
             map.putAll(params);

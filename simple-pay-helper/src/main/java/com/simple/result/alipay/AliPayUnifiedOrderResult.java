@@ -1,9 +1,9 @@
 package com.simple.result.alipay;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.alipay.api.AlipayResponse;
 import com.simple.annotation.Exclude;
 import com.simple.result.SimplePayResult;
+import com.simple.utils.BeanUtils;
 
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class AliPayUnifiedOrderResult implements SimplePayResult {
     }
 
     public Map<String,Object> getResData(){
-        Map<String,Object> map = BeanUtil.beanToMap(this);
+        Map<String,Object> map = BeanUtils.beanToMap(this);
         map.put("body",response.getBody());
         return map;
     }

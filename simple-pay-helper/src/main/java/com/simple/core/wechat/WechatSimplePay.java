@@ -1,6 +1,5 @@
 package com.simple.core.wechat;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.XmlUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,6 +11,7 @@ import com.simple.exception.SimplePayException;
 import com.simple.param.SimplePayParam;
 import com.simple.param.SimplePays;
 import com.simple.result.wechatpay.WechatUnifiedOrderResult;
+import com.simple.utils.BeanUtils;
 import com.simple.utils.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -128,17 +128,18 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
     private <R> R result(String resXml,Class<R> resClass) throws Exception{
         R result = xmlParseObject(resXml,resClass);
         Map<String,Object> map = XmlUtil.xmlToMap(resXml);
-        BeanUtil.descForEach(resClass,prop -> {
-            try{
+
+        BeanUtils.foreach(resClass, prop -> {
+            try {
                 String name = prop.getField().getName();
-                if("moreMap".equals(name)){
-                    prop.getSetter().invoke(result,map);
+                if ("moreMap".equals(name)) {
+                    prop.setter().invoke(result, map);
                     return;
-                }else if("apiXmlRes".equals(name)){
-                    prop.getSetter().invoke(result,resXml);
+                } else if ("apiXmlRes".equals(name)) {
+                    prop.setter().invoke(result, resXml);
                 }
                 map.remove(name);
-            }catch (Exception e){
+            } catch (Exception e) {
             }
         });
         return result;

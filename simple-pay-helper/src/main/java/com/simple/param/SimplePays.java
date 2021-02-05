@@ -10,6 +10,7 @@ import com.simple.param.wechatpay.WechatPayCloseOrderParam;
 import com.simple.param.wechatpay.WechatPayQueryOrderParam;
 import com.simple.param.wechatpay.WechatPayRefundParam;
 import com.simple.param.wechatpay.WechatPayUnifiedOrderParam;
+import com.simple.utils.BeanUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;
@@ -53,7 +54,7 @@ public abstract class SimplePays {
             if(bean instanceof Map){
                 paramMap = (Map<String,Object>)bean;
             }else{
-                paramMap = BeanUtil.beanToMap(bean);
+                paramMap = BeanUtils.beanToMap(bean);
             }
             String str = MapUtil.sortJoin(paramMap,"&","=",true,null);
             StringBuilder sb = new StringBuilder(str).append("&key=").append(signKey);
