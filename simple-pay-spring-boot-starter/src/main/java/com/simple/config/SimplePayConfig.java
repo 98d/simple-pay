@@ -4,6 +4,7 @@ import com.simple.core.SimplePayMethodFactory;
 import com.simple.core.alipay.AliSimplePayConfig;
 import com.simple.core.wechat.WechatSimplePayConfig;
 import com.simple.utils.StringUtils;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by Jin.Z.J  2020/11/26
  */
 @Configuration
+@EnableAutoConfiguration
 @ConfigurationProperties(prefix = "simple-pay")
 public class SimplePayConfig {
 
