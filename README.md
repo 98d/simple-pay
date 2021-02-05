@@ -8,8 +8,8 @@ QQ交流群：319444155<br/>
 Spring-Boot版本:2.2.1<br/>
 建议开发者使用以下环境，可以避免版本带来的问题<br/>
 
-    JDK: JDK1.8+<br/>
-    Maven: 3.6.1<br/>
+    JDK: JDK1.8+
+    Maven: 3.6.1
 
 配置文件:
 
@@ -33,7 +33,7 @@ Spring-Boot版本:2.2.1<br/>
     
 下单样例:
 
-    @Autowired<br/>
+    @Autowired
     SimplePayTemplate simplePayTemplate;
     
     WechatPayUnifiedOrderParam unifiedOrderParam = SimplePays.WeChat.createUnifiedOrderParam();

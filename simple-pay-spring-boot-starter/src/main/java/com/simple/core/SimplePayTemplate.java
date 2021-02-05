@@ -36,8 +36,8 @@ public class SimplePayTemplate implements SimplePayOps{
     }
 
     @Override
-    public SimplePay woa() {
-        return this.terminal(TerminalConst.WOA);
+    public SimplePay wpp() {
+        return this.terminal(TerminalConst.WPP);
     }
 
     @Override

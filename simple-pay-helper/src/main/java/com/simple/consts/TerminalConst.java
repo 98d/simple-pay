@@ -12,7 +12,7 @@ public class TerminalConst {
     //app
     public static final String APP = "app";
     //微信公众号
-    public static final String WOA = "woa";
+    public static final String WPP = "wpp";
 
 
 }

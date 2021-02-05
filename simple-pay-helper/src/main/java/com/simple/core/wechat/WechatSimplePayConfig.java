@@ -7,7 +7,7 @@ public class WechatSimplePayConfig {
 
     //统一支付回调通知地址
     private String notifyUrl;
-    //公众号 appid
+    //开放平台 appid
     private String woaAppId;
     //公众平台 appid
     private String wppAppId;

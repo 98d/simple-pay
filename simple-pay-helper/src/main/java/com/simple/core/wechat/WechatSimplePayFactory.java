@@ -34,8 +34,8 @@ public class WechatSimplePayFactory extends SimplePaySingleFactory {
     protected SimplePay createSimplePay(String terminal) {
         if(terminal.equalsIgnoreCase(TerminalConst.APP)){
             return new WechatSimplePayApp(config);
-        }else if(terminal.equalsIgnoreCase(TerminalConst.WOA)){
-            return new WechatSimplePayWoa(config);
+        }else if(terminal.equalsIgnoreCase(TerminalConst.WPP)){
+            return new WechatSimplePayWpp(config);
         }else if(terminal.equalsIgnoreCase(TerminalConst.H5)){
             return new WechatSimplePayWap(config);
         }else{

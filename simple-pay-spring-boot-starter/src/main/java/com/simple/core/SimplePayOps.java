@@ -37,7 +37,7 @@ public interface SimplePayOps {
      * 微信公众号支付
      * @return
      */
-    SimplePay woa();
+    SimplePay wpp();
 
     /**
      * 根据支付方式和终端获取

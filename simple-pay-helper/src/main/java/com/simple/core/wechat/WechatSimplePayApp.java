@@ -64,7 +64,7 @@ public class WechatSimplePayApp extends WechatSimplePay {
 
     @Override
     protected String appId() {
-        return config.getWppAppId();
+        return config.getWoaAppId();
     }
 
     @Override

@@ -13,13 +13,13 @@ import java.util.Map;
  * 微信端公众号内支付
  * Created by Jin.Z.J  2020/11/25
  */
-public class WechatSimplePayWoa extends WechatSimplePay {
+public class WechatSimplePayWpp extends WechatSimplePay {
 
     private static final String TRADE_TYPE = "JSAPI";
 
     private WechatSimplePayConfig config;
 
-    public WechatSimplePayWoa(WechatSimplePayConfig config) {
+    public WechatSimplePayWpp(WechatSimplePayConfig config) {
         this.config = config;
     }
 
@@ -65,7 +65,7 @@ public class WechatSimplePayWoa extends WechatSimplePay {
 
     @Override
     protected String appId() {
-        return config.getWoaAppId();
+        return config.getWppAppId();
     }
 
     @Override
