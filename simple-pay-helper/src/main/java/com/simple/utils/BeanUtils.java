@@ -82,10 +82,11 @@ public class BeanUtils {
                 beanProps = new ArrayList<>();
                 Map<String, Field> mapField = new HashMap<>();
 
-                for (Field declaredField : clazz.getDeclaredFields()) {
-                    mapField.put(declaredField.getName(),declaredField);
+                for(Class<?> c = clazz; c != null; c = c.getSuperclass()){
+                    for (Field declaredField : c.getDeclaredFields()) {
+                        mapField.put(declaredField.getName(),declaredField);
+                    }
                 }
-
                 for (PropertyDescriptor propertyDes : propertyDescriptors) {
                     String name = propertyDes.getName();
                     if(EXCLUDE_PROPERTY_NAME.equals(name)){
@@ -93,7 +94,7 @@ public class BeanUtils {
                     }
                     Field field = mapField.get(name);
                     if(field != null){
-                        beanProps.add(new BeanProp(field,propertyDes.getReadMethod(),propertyDes.getWriteMethod()));
+                        beanProps.add(new BeanProp(mapField.get(name),propertyDes.getReadMethod(),propertyDes.getWriteMethod()));
                     }
                 }
                 cache.put(clazz,beanProps);
@@ -197,6 +198,7 @@ public class BeanUtils {
 
 
 
+
     public static <T> void foreachVal(T obj, BiConsumer<String,Object> biConsumer){
         foreach(obj.getClass(),(field,method) -> {
             Exclude exclude = field.getAnnotation(Exclude.class);
@@ -215,6 +217,7 @@ public class BeanUtils {
 
         });
     }
+
 
 
 
