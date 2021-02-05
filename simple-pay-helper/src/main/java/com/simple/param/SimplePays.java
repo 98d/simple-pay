@@ -1,5 +1,6 @@
 package com.simple.param;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
 import com.simple.param.alipay.AliPayCloseOrderParam;
 import com.simple.param.alipay.AliPayQueryOrderParam;
@@ -9,7 +10,6 @@ import com.simple.param.wechatpay.WechatPayCloseOrderParam;
 import com.simple.param.wechatpay.WechatPayQueryOrderParam;
 import com.simple.param.wechatpay.WechatPayRefundParam;
 import com.simple.param.wechatpay.WechatPayUnifiedOrderParam;
-import com.simple.utils.BeanUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;
@@ -53,7 +53,7 @@ public abstract class SimplePays {
             if(bean instanceof Map){
                 paramMap = (Map<String,Object>)bean;
             }else{
-                paramMap = BeanUtils.beanToMap(bean);
+                paramMap = BeanUtil.beanToMap(bean);
             }
             String str = MapUtil.sortJoin(paramMap,"&","=",true,null);
             StringBuilder sb = new StringBuilder(str).append("&key=").append(signKey);
