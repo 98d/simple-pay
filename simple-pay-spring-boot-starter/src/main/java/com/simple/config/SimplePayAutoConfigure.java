@@ -1,6 +1,5 @@
-package com.simple;
+package com.simple.config;
 
-import com.simple.config.SimplePayConfig;
 import com.simple.core.SimplePay;
 import com.simple.core.SimplePayTemplate;
 import org.slf4j.Logger;

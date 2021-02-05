@@ -5,7 +5,7 @@ package com.simple.exception;
  */
 public class SimplePayException extends Exception{
 
-    private Integer status;
+    private Integer status = 500;
     private String message;
     private Object data;
 
