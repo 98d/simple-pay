@@ -7,28 +7,32 @@ simple-pay(简单支付)集成了支付宝和微信支付(部分),在实际开�
 QQ交流群：319444155<br/>
 Spring-Boot版本:2.2.1<br/>
 建议开发者使用以下环境，可以避免版本带来的问题<br/>
+
     JDK: JDK1.8+<br/>
     Maven: 3.6.1<br/>
 
 配置文件:
-simple-pay:
-  alipay:
-    app-id: appid
-    private-key: 私钥
-    ali-pay-public-key: 支付宝公钥
-    notify-url: 统一支付回调地址
-  wechat-pay:
-    sign-key: 签名加密key
-    wpp-app-id: 公众平台 appid
-    mchid: 商户号
-    woa-app-id: 开放平台 appid
-    pk12-path: 退款p12证书，默认取classpath路径,例如 refund.p12(有效性待验证)
-    notify-url: 统一支付回调地址
 
-支付模板:<br/>
-    SimplePayTemplate<br/>
+    simple-pay:
+      alipay:
+        app-id: appid
+        private-key: 私钥
+        ali-pay-public-key: 支付宝公钥
+        notify-url: 统一支付回调地址
+      wechat-pay:
+        sign-key: 签名加密key
+        wpp-app-id: 公众平台 appid
+        mchid: 商户号
+        woa-app-id: 开放平台 appid
+        pk12-path: 退款p12证书，默认取classpath路径,例如 refund.p12(有效性待验证)
+        notify-url: 统一支付回调地址
+
+支付模板:
+
+        SimplePayTemplate   
     
-下单样例:<br/>
+下单样例:
+
     @Autowired<br/>
     SimplePayTemplate simplePayTemplate;
     
