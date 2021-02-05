@@ -21,9 +21,9 @@ Spring-Boot版本:2.2.1<br/>
         notify-url: 统一支付回调地址
       wechat-pay:
         sign-key: 签名加密key
-        wpp-app-id: 开放平台 appid
+        wpp-app-id: 公众平台 appid
         mchid: 商户号
-        woa-app-id: 公众平台 appid
+        woa-app-id: 开放平台 appid
         pk12-path: 退款p12证书，默认取classpath路径,例如 refund.p12(有效性待验证)
         notify-url: 统一支付回调地址
 
