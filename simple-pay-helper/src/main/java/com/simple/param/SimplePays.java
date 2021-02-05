@@ -1,6 +1,5 @@
 package com.simple.param;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
 import com.simple.param.alipay.AliPayCloseOrderParam;
 import com.simple.param.alipay.AliPayQueryOrderParam;
