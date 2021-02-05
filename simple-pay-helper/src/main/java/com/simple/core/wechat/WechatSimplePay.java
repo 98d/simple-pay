@@ -161,7 +161,7 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
             map.put("nonce_str",IdUtil.simpleUUID().toUpperCase());
             map.put("sign",this.getSign(map));
             String res = submitPost(param.requestURI(),map);
-            return (R)XmlUtil.xmlToMap(res);
+            return result(res,param.resClass());
         }catch (Exception e){
             throw new SimplePayException(e);
         }

@@ -1,11 +1,13 @@
 package com.simple.param.wechatpay;
 
+import com.simple.result.wechatpay.WechatCloseOrderResult;
+
 import java.util.Map;
 
 /**
  * Created by Jin.Z.J  2020/11/25
  */
-public class WechatPayCloseOrderParam extends WechatAbstractSimplePayParam<Map> {
+public class WechatPayCloseOrderParam extends WechatAbstractSimplePayParam<WechatCloseOrderResult> {
 
     private static final String URL = "https://api.mch.weixin.qq.com/pay/closeorder";
 
@@ -25,7 +27,7 @@ public class WechatPayCloseOrderParam extends WechatAbstractSimplePayParam<Map> 
     }
 
     @Override
-    public Class<Map> resClass() {
-        return Map.class;
+    public Class<WechatCloseOrderResult> resClass() {
+        return WechatCloseOrderResult.class;
     }
 }
