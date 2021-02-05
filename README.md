@@ -1,17 +1,19 @@
 # simple-pay
-项目介绍
-simple-pay(简单支付)集成了支付宝和微信支付(部分),在实际开发中没有可用整合sdk。因支付项目多，便整合了一下,无缝集成了SpringBoot。<br/>
-目前仅实现 <br/>
-    微信实现终端：app、h5、jsapi 支持：下单、查询(交易查询)、关闭、退款<br/>
-    支付宝实现终端:app、h5 支持：下单、查询(交易查询,退款查询)、关闭、退款<br/>
-QQ交流群：319444155<br/>
-Spring-Boot版本:2.2.1<br/>
-建议开发者使用以下环境，可以避免版本带来的问题<br/>
+#####项目介绍
+    simple-pay(简单支付)集成了支付宝和微信支付(部分),在实际开发中没有可用整合sdk。因支付项目多，便整合了一下,无缝集成了SpringBoot。<br/>
+#####实用功能 
++ 微信实现终端：app、h5、jsapi 支持：下单、查询(交易查询)、关闭、退款<br/>
++ 支付宝实现终端:app、h5 支持：下单、查询(交易查询,退款查询)、关闭、退款<br/>
 
+#####联系作者：765426233@qq.com
+
+
+#####建议开发者使用以下环境，可以避免版本带来的问题
     JDK: JDK1.8+
     Maven: 3.6.1
+    Spring-Boot版本:2.+
 
-配置文件:
+#####配置文件:
 
     simple-pay:
       alipay:
@@ -27,11 +29,11 @@ Spring-Boot版本:2.2.1<br/>
         pk12-path: 退款p12证书，默认取classpath路径,例如 refund.p12(有效性待验证)
         notify-url: 统一支付回调地址
 
-支付模板:
+#####支付模板:
 
         SimplePayTemplate   
     
-下单样例:
+#####下单样例:
 
     @Autowired
     SimplePayTemplate simplePayTemplate;
@@ -57,4 +59,4 @@ Spring-Boot版本:2.2.1<br/>
     }
     
 开源说明
-本系统100%开源，遵守Apache2.0协议
++ 本系统100%开源，遵守Apache2.0协议
