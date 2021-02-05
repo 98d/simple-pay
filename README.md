@@ -25,10 +25,11 @@ simple-pay:
     pk12-path: 退款p12证书，默认取classpath路径,例如 refund.p12(有效性待验证)
     notify-url: 统一支付回调地址
 
-支付模板:SimplePayTemplate
+支付模板:<br/>
+    SimplePayTemplate<br/>
     
-下单样例:
-    @Autowired
+下单样例:<br/>
+    @Autowired<br/>
     SimplePayTemplate simplePayTemplate;
     
     WechatPayUnifiedOrderParam unifiedOrderParam = SimplePays.WeChat.createUnifiedOrderParam();
