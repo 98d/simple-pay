@@ -9,7 +9,7 @@
 ### 建议开发者使用以下环境，可以避免版本带来的问题
     JDK: JDK1.8+
     Maven: 3.6.1
-    Spring-Boot版本:2.+
+    SpringBoot版本: 2.+
 
 ### 配置文件
 
@@ -27,14 +27,93 @@
         pk12-path: 退款p12证书，默认取classpath路径,例如 refund.p12(有效性待验证)
         notify-url: 统一支付回调地址
 
-### 支付模板:
-
-        SimplePayTemplate   
+### 支付模板:SimplePayTemplate 
+        
+        /**
+         * 指定终端支付
+         * @param terminal
+         * @return
+         */
+        SimplePay terminal(String terminal);
     
-### 下单样例:
+        /**
+         * h5支付
+         * @return
+         */
+        SimplePay h5();
+    
+        /**
+         * app支付
+         * @return
+         */
+        SimplePay app();
+    
+        /**
+         *
+         * 获取PC
+         * @return
+         */
+        SimplePay pc();
+    
+        /**
+         * 微信公众号支付
+         * @return
+         */
+        SimplePay wpp();
+    
+        /**
+         * 根据支付方式和终端获取
+         * @param method   支付方式
+         * @param terminal 终端
+         * @return
+         */
+        SimplePay getSimplePay(PayMethod method, String terminal);
+    
+        /**
+         * 获取微信指定终端
+         * @param terminal
+         * @return
+         */
+        SimplePay getWechatPay(String terminal);
+    
+    
+        /**
+         * 获取支付宝指定终端
+         * @param terminal
+         * @return
+         */
+        SimplePay getAliPay(String terminal);
+
+### 支持终端
+    
+    public class TerminalConst {
+    
+        //h5移动端
+        public static final String H5 = "h5";
+        //pc网页
+        public static final String PC = "pc";
+        //app
+        public static final String APP = "app";
+        //微信公众号
+        public static final String WPP = "wpp";
+    
+    
+    }
+
+
+### 创建业务参数对象
+    //微信统一下单参数对象
+    SimplePays.WeChat.createUnifiedOrderParam()
+    //支付宝统一下单参数对象
+    SimplePays.Ali.createUnifiedOrderParam()
+    //其他业务参数
+    ...   
+    
+
+### 使用样例
 
     @Autowired
-    SimplePayTemplate simplePayTemplate;
+    private SimplePayTemplate simplePayTemplate;
     
     WechatPayUnifiedOrderParam unifiedOrderParam = SimplePays.WeChat.createUnifiedOrderParam();
     unifiedOrderParam.setNonce_str(IdUtil.simpleUUID());
@@ -54,7 +133,12 @@
        }
     }catch (SimplePayException e){
        //异常
-    }
+    }    
+
+    //其他业务API 
+    ...
+
+
     
-开源说明
+### 开源说明
 + 本系统100%开源，遵守Apache2.0协议
