@@ -178,25 +178,6 @@ public class BeanUtils {
 
 
 
-    public static <T> void foreachSetter(Class<T> clazz, BiConsumer<Field,Method> biConsumer){
-        Objects.requireNonNull(clazz);
-        List<BeanProp> beanProps = getBeanProp(clazz);
-        for (BeanProp prop : beanProps) {
-            Method method = prop.setter();
-            biConsumer.accept(prop.getField(),method);
-        }
-    }
-
-    public static <T> void foreach(Class<T> clazz, BiConsumer<Field,Method> biConsumer){
-        Objects.requireNonNull(clazz);
-        List<BeanProp> beanProps = getBeanProp(clazz);
-        for (BeanProp prop : beanProps) {
-            Method method = prop.getter();
-            biConsumer.accept(prop.getField(),method);
-        }
-    }
-
-
     public static <T> void foreach(Class<T> clazz, Consumer<BeanProp> biConsumer){
         Objects.requireNonNull(clazz);
         List<BeanProp> beanProps = getBeanProp(clazz);
@@ -209,12 +190,14 @@ public class BeanUtils {
 
 
     public static <T> void foreachVal(T obj, BiConsumer<String,Object> biConsumer){
-        foreach(obj.getClass(),(field,method) -> {
+        foreach(obj.getClass(),(prop) -> {
+            Field field = prop.getField();
             Exclude exclude = field.getAnnotation(Exclude.class);
             if(exclude != null){
                 return;
             }
             String name = field.getName();
+            Method method = prop.getter();
             if(method.getParameterTypes().length == 0){//如果没有参数
                 Object res = null;
                 try{
@@ -223,7 +206,6 @@ public class BeanUtils {
                 }
                 biConsumer.accept(name,res);
             }
-
         });
     }
 
