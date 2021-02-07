@@ -95,7 +95,7 @@ public class BeanUtils {
                     }
                     Field field = mapField.get(name);
                     if(field != null){
-                        beanProps.add(new BeanProp(mapField.get(name),propertyDes.getReadMethod(),propertyDes.getWriteMethod()));
+                        beanProps.add(new BeanProp(field,propertyDes.getReadMethod(),propertyDes.getWriteMethod()));
                     }
                 }
                 cache.put(clazz,beanProps);
