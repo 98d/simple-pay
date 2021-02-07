@@ -15,11 +15,12 @@ public abstract class AbstractSimplePayParam<R> implements SimplePayParam<R> {
         return otherParam;
     }
 
-    public AbstractSimplePayParam addParam(String key, Object val){
+    @Override
+    public SimplePayParam<R> addParam(String key, Object value) {
         if(this.otherParam == null){
             this.otherParam = new HashMap<>();
         }
-        this.otherParam.put(key,val);
+        this.otherParam.put(key,value);
         return this;
     }
 
