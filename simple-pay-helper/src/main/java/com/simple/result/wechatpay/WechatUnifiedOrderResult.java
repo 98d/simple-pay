@@ -131,7 +131,7 @@ public class WechatUnifiedOrderResult extends WechatPayBaseResult implements Sim
     }
     @Override
     public boolean isSuccess(){
-        return !("FAIL".equalsIgnoreCase(this.return_code) || "FAIL".equalsIgnoreCase(this.result_code));
+        return SUCCESSFUL.equalsIgnoreCase(this.return_code) && SUCCESSFUL.equalsIgnoreCase(this.result_code);
     }
 
 }

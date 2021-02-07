@@ -218,7 +218,7 @@ public class WechatPayRefundResult extends WechatPayBaseResult implements Simple
     }
     @Override
     public boolean isSuccess(){
-        return SUCCESSFUL.equalsIgnoreCase(this.result_code) && SUCCESSFUL.equalsIgnoreCase(this.return_code);
+        return SUCCESSFUL.equalsIgnoreCase(this.return_code) && SUCCESSFUL.equalsIgnoreCase(this.result_code);
     }
 
 }

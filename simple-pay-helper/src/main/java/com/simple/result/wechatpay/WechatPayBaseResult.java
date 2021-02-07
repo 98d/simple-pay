@@ -7,6 +7,8 @@ import java.util.Map;
  */
 public class WechatPayBaseResult {
 
+    public static final String SUCCESSFUL = "SUCCESS";
+
     private Map<String,Object> moreRes;
     private String apiXmlRes;
 

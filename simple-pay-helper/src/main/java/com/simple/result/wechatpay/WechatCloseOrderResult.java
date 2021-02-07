@@ -82,6 +82,6 @@ public class WechatCloseOrderResult extends WechatPayBaseResult implements Simpl
 
     @Override
     public boolean isSuccess() {
-        return "SUCCESS".equals(this.result_code) && "SUCCESS".equals(this.return_code);
+        return SUCCESSFUL.equalsIgnoreCase(this.return_code) && SUCCESSFUL.equalsIgnoreCase(this.result_code);
     }
 }

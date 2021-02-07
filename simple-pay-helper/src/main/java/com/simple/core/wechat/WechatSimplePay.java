@@ -33,47 +33,45 @@ import java.util.Map;
  * 微信支付
  * Created by Jin.Z.J  2020/11/25
  */
-public abstract class WechatSimplePay extends AbstractSimplePay{
+public abstract class WechatSimplePay extends AbstractSimplePay {
 
 
+    protected interface Consumer {
 
-
-    protected interface Consumer{
-
-        void accept(Map<String,Object> map) throws SimplePayException;
+        void accept(Map<String, Object> map) throws SimplePayException;
 
     }
 
 
-    protected <R> WechatUnifiedOrderResult submitUnifiedOrder(SimplePayParam<R> payParam, Consumer consumer) throws SimplePayException{
-        Map<String,Object> beanMap = getBizContent(payParam);
-        Long orderId = (Long)beanMap.remove("order_id");
-        String outTradeNo = (String)beanMap.get("out_trade_no");
-        if(StringUtils.isEmpty(outTradeNo)){
+    protected <R> WechatUnifiedOrderResult submitUnifiedOrder(SimplePayParam<R> payParam, Consumer consumer) throws SimplePayException {
+        Map<String, Object> beanMap = getBizContent(payParam);
+        Long orderId = (Long) beanMap.remove("order_id");
+        String outTradeNo = (String) beanMap.get("out_trade_no");
+        if (StringUtils.isEmpty(outTradeNo)) {
             throw new SimplePayException("out_trade_no can not be null");
         }
-        String notifyUrl = (String)beanMap.get("notify_url");
-        if(StringUtils.isEmpty(notifyUrl)){
+        String notifyUrl = (String) beanMap.get("notify_url");
+        if (StringUtils.isEmpty(notifyUrl)) {
             notifyUrl = this.getConfig().getNotifyUrl();
-            if(StringUtils.isNotEmpty(notifyUrl)){
-                beanMap.put("notify_url",notifyUrl);
+            if (StringUtils.isNotEmpty(notifyUrl)) {
+                beanMap.put("notify_url", notifyUrl);
             }
         }
         consumer.accept(beanMap);
         //参数签名
-        beanMap.put("sign",this.getSign(beanMap));
-        String str = this.submitPost(payParam.requestURI(),beanMap);
-        try{
+        beanMap.put("sign", this.getSign(beanMap));
+        String str = this.submitPost(payParam.requestURI(), beanMap);
+        try {
             WechatUnifiedOrderResult result = xmlParseObject(str, WechatUnifiedOrderResult.class);
-            if(result.isSuccess()){
-                Map<String,Object> resMap = new HashMap<>();
-                resMap.put("order_id",orderId);
-                resMap.put("order_no",outTradeNo);
+            if (result.isSuccess()) {
+                Map<String, Object> resMap = new HashMap<>();
+                resMap.put("order_id", orderId);
+                resMap.put("order_no", outTradeNo);
                 result.setMoreRes(resMap);
             }
             result.setApiXmlRes(str);
             return result;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new SimplePayException(e);
         }
     }
@@ -81,22 +79,23 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
 
     /**
      * 提交post 请求
+     *
      * @param url
      * @param beanMap
      * @return
      * @throws SimplePayException
      */
-    private String submitPost(String url,Map<String,Object> beanMap) throws SimplePayException{
-        try(CloseableHttpClient httpclient = HttpClients.custom().build()){
+    private String submitPost(String url, Map<String, Object> beanMap) throws SimplePayException {
+        try (CloseableHttpClient httpclient = HttpClients.custom().build()) {
             HttpPost httpPost = new HttpPost(url);
-            httpPost.setHeader("Content-Type","text/xml");
+            httpPost.setHeader("Content-Type", "text/xml");
             httpPost.setEntity(new StringEntity(getXmlParams(beanMap), "UTF-8"));
-            try(CloseableHttpResponse response = httpclient.execute(httpPost)){
+            try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
                 return EntityUtils.toString(response.getEntity(), "UTF-8");
             }
-        }catch (SimplePayException e){
+        } catch (SimplePayException e) {
             throw e;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new SimplePayException(e);
         }
     }
@@ -104,30 +103,30 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
 
     /**
      * 交易查询
+     *
      * @param param
      * @param <R>
      * @return
      * @throws SimplePayException
      */
     public <R> R queryTradeOrder(SimplePayParam<R> param) throws SimplePayException {
-        try{
-            Map<String,Object> paramMap = getBizContent(param);
-            paramMap.put("mch_id",this.getConfig().getMchid());
-            paramMap.put("appid",this.appId());
-            paramMap.put("nonce_str",IdUtil.simpleUUID().toUpperCase());
-            paramMap.put("sign",this.getSign(paramMap));
-            String resXml = submitPost(param.requestURI(),paramMap);
-            return result(resXml,param.resClass());
-        }catch (Exception e){
+        try {
+            Map<String, Object> paramMap = getBizContent(param);
+            paramMap.put("mch_id", this.getConfig().getMchid());
+            paramMap.put("appid", this.appId());
+            paramMap.put("nonce_str", IdUtil.simpleUUID().toUpperCase());
+            paramMap.put("sign", this.getSign(paramMap));
+            String resXml = submitPost(param.requestURI(), paramMap);
+            return result(resXml, param.resClass());
+        } catch (Exception e) {
             throw new SimplePayException(e);
         }
     }
 
 
-
-    private <R> R result(String resXml,Class<R> resClass) throws Exception{
-        R result = xmlParseObject(resXml,resClass);
-        Map<String,Object> map = XmlUtil.xmlToMap(resXml);
+    private <R> R result(String resXml, Class<R> resClass) throws Exception {
+        R result = xmlParseObject(resXml, resClass);
+        Map<String, Object> map = XmlUtil.xmlToMap(resXml);
 
         BeanUtils.foreach(resClass, prop -> {
             try {
@@ -148,6 +147,7 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
 
     /**
      * 关闭订单
+     *
      * @param param
      * @param <R>
      * @return
@@ -155,15 +155,15 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
      */
     @Override
     public <R> R closeOrder(SimplePayParam<R> param) throws SimplePayException {
-        try{
-            Map<String,Object> map = getBizContent(param);
-            map.put("mch_id",this.getConfig().getMchid());
-            map.put("appid",this.appId());
-            map.put("nonce_str",IdUtil.simpleUUID().toUpperCase());
-            map.put("sign",this.getSign(map));
-            String res = submitPost(param.requestURI(),map);
-            return result(res,param.resClass());
-        }catch (Exception e){
+        try {
+            Map<String, Object> map = getBizContent(param);
+            map.put("mch_id", this.getConfig().getMchid());
+            map.put("appid", this.appId());
+            map.put("nonce_str", IdUtil.simpleUUID().toUpperCase());
+            map.put("sign", this.getSign(map));
+            String res = submitPost(param.requestURI(), map);
+            return result(res, param.resClass());
+        } catch (Exception e) {
             throw new SimplePayException(e);
         }
     }
@@ -171,6 +171,7 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
 
     /**
      * 退款
+     *
      * @param param
      * @param <R>
      * @return
@@ -178,56 +179,58 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
      */
     @Override
     public <R> R refund(SimplePayParam<R> param) throws SimplePayException {
-        Map<String,Object> map = getBizContent(param);
+        Map<String, Object> map = getBizContent(param);
         String mchid = this.getConfig().getMchid();
-        map.put("appid",this.appId());
-        map.put("mch_id",mchid);
+        map.put("appid", this.appId());
+        map.put("mch_id", mchid);
         map.put("nonce_str", IdUtil.simpleUUID());
         map.put("sign", getSign(param));
-        String notify_url = (String)map.get("notify_url");
-        if(StringUtils.isEmpty(notify_url)){
-            map.put("notify_url",this.getConfig().getRefundNotifyUrl());
+        String notify_url = (String) map.get("notify_url");
+        if (StringUtils.isEmpty(notify_url)) {
+            map.put("notify_url", this.getConfig().getRefundNotifyUrl());
         }
         SSLConnectionSocketFactory ssl;
-        try(InputStream inputStream = new FileInputStream(this.getConfig().getPk12Path())){
+        try (InputStream inputStream = new FileInputStream(this.getConfig().getPk12Path())) {
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
-            keyStore.load(inputStream,mchid.toCharArray());
+            keyStore.load(inputStream, mchid.toCharArray());
             SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mchid.toCharArray()).build();
-            ssl = new SSLConnectionSocketFactory(sslcontext,SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-        } catch (Exception e){
+            ssl = new SSLConnectionSocketFactory(sslcontext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+        } catch (Exception e) {
             throw new SimplePayException(e);
         }
-        try(CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(ssl).build()){
+        try (CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(ssl).build()) {
             HttpPost httpPost = new HttpPost(param.requestURI());
             httpPost.setEntity(new StringEntity(getXmlParams(param), "UTF-8"));
-            try(CloseableHttpResponse response = httpclient.execute(httpPost)){
+            try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
                 String xmlResult = EntityUtils.toString(response.getEntity(), "UTF-8");
-                return result(xmlResult,param.resClass());
+                return result(xmlResult, param.resClass());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new SimplePayException(e);
         }
     }
 
     /**
      * appId
+     *
      * @return
      */
     protected abstract String appId();
 
     /**
      * 配置文件
+     *
      * @return
      */
     protected abstract WechatSimplePayConfig getConfig();
 
 
     protected <T> String getSign(T bean) {
-        return SimplePays.WeChat.getSign(bean,this.getConfig().getSignKey());
+        return SimplePays.WeChat.getSign(bean, this.getConfig().getSignKey());
     }
 
 
-    protected <T> String getXmlParams(T param)throws Exception {
+    protected <T> String getXmlParams(T param) throws Exception {
         String xmlParam = new XmlMapper()
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                 .writer()
@@ -237,20 +240,28 @@ public abstract class WechatSimplePay extends AbstractSimplePay{
     }
 
 
-    protected <T> T xmlParseObject(String xml,Class<T> clazz) throws Exception{
+    protected <T> T xmlParseObject(String xml, Class<T> clazz) throws Exception {
         ObjectMapper objectMapper = new XmlMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return  objectMapper.readValue(xml, clazz);
+        return objectMapper.readValue(xml, clazz);
     }
 
 
     @Override
     public <R> R queryRefund(SimplePayParam<R> param) throws SimplePayException {
-        throw new SimplePayException("refund query has not been implemented yet");
+        try {
+            Map<String, Object> map = getBizContent(param);
+            String mchid = this.getConfig().getMchid();
+            map.put("appid", this.appId());
+            map.put("mch_id", mchid);
+            map.put("nonce_str", IdUtil.simpleUUID());
+            map.put("sign", getSign(map));
+            String res = submitPost(param.requestURI(), map);
+            return result(res, param.resClass());
+        } catch (Exception e) {
+            throw new SimplePayException(e);
+        }
     }
-
-
-
 
 
 }

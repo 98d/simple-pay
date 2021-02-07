@@ -5,10 +5,7 @@ import com.simple.param.alipay.AliPayCloseOrderParam;
 import com.simple.param.alipay.AliPayQueryOrderParam;
 import com.simple.param.alipay.AliPayRefundParam;
 import com.simple.param.alipay.AliPayUnifiedOrderParam;
-import com.simple.param.wechatpay.WechatPayCloseOrderParam;
-import com.simple.param.wechatpay.WechatPayQueryOrderParam;
-import com.simple.param.wechatpay.WechatPayRefundParam;
-import com.simple.param.wechatpay.WechatPayUnifiedOrderParam;
+import com.simple.param.wechatpay.*;
 import com.simple.utils.BeanUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -41,6 +38,12 @@ public abstract class SimplePays {
         public static WechatPayRefundParam createRefundParam(){
             return new WechatPayRefundParam();
         }
+
+
+        public static WechatPayQueryRefundParam createQueryRefundParam(){
+            return new WechatPayQueryRefundParam();
+        }
+
 
         /**
          * @param bean javaBean 和 Map
