@@ -29,13 +29,13 @@ public class SimplePayDbConfig {
 
     public WechatSimplePayConfig getWechatConfig(){
         WechatSimplePayConfig config = jdbcTemplate.queryForObject(WECHAT_CONFIG_SQL,new BeanPropertyRowMapper<>(WechatSimplePayConfig.class));
-        format(config.getNotifyUrl(),config);
+        config.setNotifyUrl(format(config.getNotifyUrl(),config));
         return config;
     }
 
     public WechatSimplePayConfig getWechatConfig(Long id){
         WechatSimplePayConfig config = jdbcTemplate.queryForObject(WECHAT_CONFIG_SQL_BY_ID,new BeanPropertyRowMapper<>(WechatSimplePayConfig.class),id);
-        format(config.getNotifyUrl(),config);
+        config.setNotifyUrl(format(config.getNotifyUrl(),config));
         return config;
     }
 
