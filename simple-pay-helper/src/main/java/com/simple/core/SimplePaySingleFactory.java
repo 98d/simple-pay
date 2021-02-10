@@ -1,5 +1,7 @@
 package com.simple.core;
 
+import com.simple.enums.PayMethod;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
@@ -12,7 +14,7 @@ import java.util.function.Supplier;
 public abstract class SimplePaySingleFactory implements SimplePayFactory{
 
     /**缓存已经生产过的 SimplePay 对象*/
-    private static final SimpleCache<SimplePay> cache = new SimpleCache<>();
+    private static final SimpleCache<Object> cache = new SimpleCache<>();
 
     private static class SimpleCache<T>{
 
@@ -34,7 +36,13 @@ public abstract class SimplePaySingleFactory implements SimplePayFactory{
     @Override
     public SimplePay getSimplePay(String terminal) {
         String attrKey = this.getKey(terminal);
-        return cache.get(attrKey,() -> this.createSimplePay(terminal));
+        return (SimplePay)cache.get(attrKey,() -> this.createSimplePay(terminal));
+    }
+
+    @Override
+    public SimpleAuth getSimpleAuth(PayMethod method,String terminal) {
+        String key = method.getName() + "-" + terminal;
+        return (SimpleAuth)cache.get(key,() -> this.createSimpleAuth(terminal));
     }
 
     /**
@@ -52,5 +60,6 @@ public abstract class SimplePaySingleFactory implements SimplePayFactory{
      */
     protected abstract SimplePay createSimplePay(String terminal);
 
+    protected abstract SimpleAuth createSimpleAuth(String terminal);
 
 }

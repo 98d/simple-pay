@@ -1,9 +1,11 @@
 package com.simple.config;
 
+import com.simple.core.SimplePayBaseConfig;
 import com.simple.core.SimplePayMethodFactory;
 import com.simple.core.alipay.AliSimplePayConfig;
 import com.simple.core.wechat.WechatSimplePayConfig;
 import com.simple.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,11 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "simple-pay")
 public class SimplePayConfig {
 
+    @Autowired
+    private SimplePayDbConfig simplePayDbConfig;
+
+    private static final String CONFIG_TYPE_PROPERTIES = "properties";
+    private static final String CONFIG_TYPE_DB = "db";
     //统一支付回调通知地址
     private String notifyUrl;
     //统一退款回调地址
@@ -25,15 +32,22 @@ public class SimplePayConfig {
     //h5重定向跳转地址
     private String redirectUrl;
     //微信支付相关配置
-    private final WeChatPayConfig wechatPay = new WeChatPayConfig();
+    private final WechatSimplePayConfig wechatPay = new WechatSimplePayConfig();
     //支付宝相关配置
-    private final AliPayConfig alipay = new AliPayConfig();
+    private final AliSimplePayConfig alipay = new AliSimplePayConfig();
 
+    private boolean wechatSingleCase;
 
-    public static class WeChatPayConfig extends WechatSimplePayConfig {
-    }
+    private boolean aliSingleCase;
 
-    public static class AliPayConfig extends AliSimplePayConfig {
+    private String wechatConfigType ;
+    private String aliConfigType;
+
+    public SimplePayConfig() {
+        this.wechatConfigType = CONFIG_TYPE_PROPERTIES;
+        this.aliConfigType = CONFIG_TYPE_PROPERTIES;
+        this.wechatSingleCase = true;
+        this.aliSingleCase = true;
     }
 
 
@@ -61,44 +75,84 @@ public class SimplePayConfig {
         this.redirectUrl = redirectUrl;
     }
 
-    public WeChatPayConfig getWechatPay() {
+    public WechatSimplePayConfig getWechatPay() {
         return wechatPay;
     }
 
-    public AliPayConfig getAlipay() {
+    public AliSimplePayConfig getAlipay() {
         return alipay;
+    }
+
+    public String getWechatConfigType() {
+        return wechatConfigType;
+    }
+
+    public void setWechatConfigType(String wechatConfigType) {
+        this.wechatConfigType = wechatConfigType;
+    }
+
+    public String getAliConfigType() {
+        return aliConfigType;
+    }
+
+    public void setAliConfigType(String aliConfigType) {
+        this.aliConfigType = aliConfigType;
+    }
+
+    public boolean isWechatSingleCase() {
+        return wechatSingleCase;
+    }
+
+    public void setWechatSingleCase(boolean wechatSingleCase) {
+        this.wechatSingleCase = wechatSingleCase;
+    }
+
+    public boolean isAliSingleCase() {
+        return aliSingleCase;
+    }
+
+    public void setAliSingleCase(boolean aliSingleCase) {
+        this.aliSingleCase = aliSingleCase;
     }
 
 
     @Bean
     public SimplePayMethodFactory getSimplePayFactory(){
-        if(StringUtils.isNotEmpty(notifyUrl)){
-            if(StringUtils.isEmpty(wechatPay.getNotifyUrl())){
-                wechatPay.setNotifyUrl(notifyUrl);
+        return new SimplePayMethodFactory(wechatSingleCase,aliSingleCase,() -> {
+            WechatSimplePayConfig config;
+            if(wechatConfigType.equalsIgnoreCase(CONFIG_TYPE_PROPERTIES)){
+                config = this.wechatPay;
+            }else{
+                config = simplePayDbConfig.getWechatConfig();
             }
-            if(StringUtils.isEmpty(alipay.getNotifyUrl())){
-                alipay.setNotifyUrl(notifyUrl);
-            }
-        }
-        if(StringUtils.isNotEmpty(redirectUrl)){
-            if(StringUtils.isEmpty(wechatPay.getRedirectUrl())){
-                wechatPay.setRedirectUrl(redirectUrl);
-            }
-            if(StringUtils.isEmpty(alipay.getRedirectUrl())){
-                alipay.setRedirectUrl(redirectUrl);
-            }
-        }
-        if(StringUtils.isNotEmpty(refundNotifyUrl)){
-            if(StringUtils.isEmpty(wechatPay.getRefundNotifyUrl())){
-                wechatPay.setRefundNotifyUrl(refundNotifyUrl);
-            }
-            if(StringUtils.isEmpty(alipay.getRefundNotifyUrl())){
-                alipay.setRefundNotifyUrl(refundNotifyUrl);
-            }
-        }
-        return new SimplePayMethodFactory.Builder().wechatPayConfig(wechatPay).aliPayConfig(alipay).build();
+            setDefaultProp(config);
+            return config;
+        },() -> {
+            AliSimplePayConfig config = this.alipay;
+            setDefaultProp(config);
+            return config;
+        });
     }
 
+
+
+
+
+    /**
+     * 设置默认配置
+     * @param config
+     */
+    private void setDefaultProp(SimplePayBaseConfig config){
+        if(StringUtils.isEmpty(config.getNotifyUrl())){
+            config.setNotifyUrl(this.notifyUrl);
+        }
+        if(StringUtils.isEmpty(config.getRefundNotifyUrl())){
+            config.setRefundNotifyUrl(this.refundNotifyUrl);
+        }
+        if(StringUtils.isEmpty(config.getRedirectUrl())){
+            config.setRedirectUrl(this.redirectUrl);
+        }
+    }
 
 
 

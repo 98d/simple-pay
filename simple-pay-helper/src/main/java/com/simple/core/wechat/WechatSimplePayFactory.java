@@ -1,6 +1,7 @@
 package com.simple.core.wechat;
 
 import com.simple.consts.TerminalConst;
+import com.simple.core.SimpleAuth;
 import com.simple.core.SimplePay;
 import com.simple.core.SimplePaySingleFactory;
 
@@ -19,10 +20,10 @@ public class WechatSimplePayFactory extends SimplePaySingleFactory {
     @Override
     protected String getKey(String terminal) {
         StringBuilder builder = new StringBuilder(terminal);
-        if(terminal.equals(TerminalConst.APP)){
-            builder.append("-").append(config.getWoaAppId()).append("-").append(config.getMchid());
-        }else{
+        if(terminal.equals(TerminalConst.WPP)){
             builder.append("-").append(config.getWppAppId()).append("-").append(config.getMchid());
+        }else{
+            builder.append("-").append(config.getWoaAppId()).append("-").append(config.getMchid());
         }
         return builder.toString();
     }
@@ -41,5 +42,10 @@ public class WechatSimplePayFactory extends SimplePaySingleFactory {
         }else{
             return null;
         }
+    }
+
+    @Override
+    protected SimpleAuth createSimpleAuth(String terminal) {
+        throw new RuntimeException("non-impl");
     }
 }

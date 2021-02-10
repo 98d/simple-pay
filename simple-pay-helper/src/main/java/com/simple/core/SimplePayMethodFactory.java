@@ -10,66 +10,79 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * Created by Jin.Z.J  2020/11/25
  */
 public class SimplePayMethodFactory extends AbstractSimplePayFactory{
 
-    private final WechatSimplePayConfig weChatPayConfig;
 
-    private final AliSimplePayConfig aliPayConfig;
+    private final boolean wechatSingleCase;
+
+    private final boolean aliSingleCase;
+
+    private Supplier<WechatSimplePayConfig> wechatSupplier;
+
+    private Supplier<AliSimplePayConfig> aliSupplier;
 
     private Map<PayMethod,SimplePayFactory> simplePayFactoryCache = new ConcurrentHashMap<>(2);
 
-    private SimplePayMethodFactory(WechatSimplePayConfig weChatPayConfig, AliSimplePayConfig aliPayConfig) {
-        this.weChatPayConfig = weChatPayConfig;
-        this.aliPayConfig = aliPayConfig;
+
+    public SimplePayMethodFactory(Supplier<WechatSimplePayConfig> wechatSupplier, Supplier<AliSimplePayConfig> aliSupplier) {
+        this(true,true,wechatSupplier,aliSupplier);
+    }
+
+    public SimplePayMethodFactory(boolean wechatSingleCase,boolean aliSingleCase, Supplier<WechatSimplePayConfig> wechatSupplier, Supplier<AliSimplePayConfig> aliSupplier) {
+        this.wechatSingleCase = wechatSingleCase;
+        this.aliSingleCase = aliSingleCase;
+        this.wechatSupplier = wechatSupplier;
+        this.aliSupplier = aliSupplier;
     }
 
     @Override
     public SimplePayFactory getFactory(PayMethod method) {
         Objects.requireNonNull(method,"pay method can not be null");
-        return Optional.ofNullable(simplePayFactoryCache.get(method)).orElseGet(() -> {
-            SimplePayFactory simplePayFactory;
-            if(method.equals(PayMethod.WECHAT)){
-                if(weChatPayConfig == null){
-                    throw new RuntimeException("wechat payment is not configured");
-                }
-                simplePayFactory = new WechatSimplePayFactory(weChatPayConfig);
+        if(method.equals(PayMethod.WECHAT)){
+            if(wechatSingleCase){
+                return Optional.ofNullable(simplePayFactoryCache.get(method)).orElseGet(() -> {
+                    SimplePayFactory simplePayFactory = getWechatSimplePayFactory();
+                    this.simplePayFactoryCache.put(method,simplePayFactory);
+                    return simplePayFactory;
+                });
             }else{
-                if(aliPayConfig == null){
-                    throw new RuntimeException("ali payment is not configured");
-                }
-                simplePayFactory = new AliSimplePayFactory(aliPayConfig);
+                return getWechatSimplePayFactory();
             }
-            this.simplePayFactoryCache.put(method,simplePayFactory);
-            return simplePayFactory;
-        });
+        }else{
+            if(aliSingleCase){
+                return Optional.ofNullable(simplePayFactoryCache.get(method)).orElseGet(() -> {
+                    SimplePayFactory simplePayFactory = getAliSimplePayFactory();
+                    this.simplePayFactoryCache.put(method,simplePayFactory);
+                    return simplePayFactory;
+                });
+            }else{
+                return getAliSimplePayFactory();
+            }
+        }
     }
 
 
-    public static class Builder{
-
-        private WechatSimplePayConfig wechatPayConfig;
-        private AliSimplePayConfig aliPayConfig;
-
-        public Builder wechatPayConfig(WechatSimplePayConfig wechatPayConfig){
-            this.wechatPayConfig = wechatPayConfig;
-            return this;
+    private SimplePayFactory getWechatSimplePayFactory(){
+        WechatSimplePayConfig wechatSimplePayConfig = wechatSupplier.get();
+        if(wechatSimplePayConfig == null){
+            throw new RuntimeException("wechat payment is not configured");
         }
-
-        public Builder aliPayConfig(AliSimplePayConfig aliPayConfig){
-            this.aliPayConfig = aliPayConfig;
-            return this;
-        }
-
-        public SimplePayMethodFactory build(){
-            return new SimplePayMethodFactory(this.wechatPayConfig,this.aliPayConfig);
-        }
-
+        return new WechatSimplePayFactory(wechatSimplePayConfig);
     }
 
+
+    private SimplePayFactory getAliSimplePayFactory(){
+        AliSimplePayConfig aliPayConfig = aliSupplier.get();
+        if(aliPayConfig == null){
+            throw new RuntimeException("ali payment is not configured");
+        }
+        return new AliSimplePayFactory(aliPayConfig);
+    }
 
 
 

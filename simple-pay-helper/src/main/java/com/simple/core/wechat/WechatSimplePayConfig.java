@@ -1,33 +1,37 @@
 package com.simple.core.wechat;
 
+import com.simple.core.SimplePayBaseConfig;
+
 /**
  * Created by Jin.Z.J  2020/11/25
  */
-public class WechatSimplePayConfig {
+public class WechatSimplePayConfig extends SimplePayBaseConfig {
 
-    //统一支付回调通知地址
-    private String notifyUrl;
+    private Long id;
+
+
     //开放平台 appid
     private String woaAppId;
+    //开放平台 secret
+    private String woaSecret;
+
     //公众平台 appid
     private String wppAppId;
+    //公众平台 secret
+    private String wppSecret;
     //签名signKey
     private String signKey;
     //商户号
     private String mchid;
     //pk12证书路径
     private String pk12Path;
-    //统一退款回调地址
-    private String refundNotifyUrl;
 
-    private String redirectUrl;
-
-    public String getNotifyUrl() {
-        return notifyUrl;
+    public Long getId() {
+        return id;
     }
 
-    public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getWoaAppId() {
@@ -38,12 +42,28 @@ public class WechatSimplePayConfig {
         this.woaAppId = woaAppId;
     }
 
+    public String getWoaSecret() {
+        return woaSecret;
+    }
+
+    public void setWoaSecret(String woaSecret) {
+        this.woaSecret = woaSecret;
+    }
+
     public String getWppAppId() {
         return wppAppId;
     }
 
     public void setWppAppId(String wppAppId) {
         this.wppAppId = wppAppId;
+    }
+
+    public String getWppSecret() {
+        return wppSecret;
+    }
+
+    public void setWppSecret(String wppSecret) {
+        this.wppSecret = wppSecret;
     }
 
     public String getSignKey() {
@@ -70,19 +90,4 @@ public class WechatSimplePayConfig {
         this.pk12Path = pk12Path;
     }
 
-    public String getRefundNotifyUrl() {
-        return refundNotifyUrl;
-    }
-
-    public void setRefundNotifyUrl(String refundNotifyUrl) {
-        this.refundNotifyUrl = refundNotifyUrl;
-    }
-
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
-
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
-    }
 }

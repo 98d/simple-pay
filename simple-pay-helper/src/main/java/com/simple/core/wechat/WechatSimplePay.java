@@ -217,6 +217,14 @@ public abstract class WechatSimplePay extends AbstractSimplePay {
      */
     protected abstract String appId();
 
+
+//    /**
+//     * 凭证
+//     * @return
+//     */
+//    protected abstract String secret();
+
+
     /**
      * 配置文件
      *
@@ -263,5 +271,34 @@ public abstract class WechatSimplePay extends AbstractSimplePay {
         }
     }
 
-
+//
+//    @Override
+//    public <R> R auth(SimplePayParam<R> param) throws SimplePayException {
+//        try(CloseableHttpClient httpClient = HttpClients.createDefault()) {
+//
+//            Map<String, Object> map = getBizContent(param);
+//
+//            URIBuilder uriBuilder = new URIBuilder(param.requestURI());
+//            uriBuilder.addParameter("appid", this.appId());
+//            uriBuilder.addParameter("secret",this.secret());
+//            uriBuilder.addParameter("grant_type", "authorization_code");
+//            map.forEach((k,v) -> uriBuilder.addParameter(k,v == null ? StringUtils.EMPYT : v.toString()));
+//            HttpGet httpGet = new HttpGet(uriBuilder.build());
+////            RequestConfig config = getDefaultRequestConfig();
+////            httpGet.setConfig(config);
+//            try(CloseableHttpResponse response = httpClient.execute(httpGet)){
+//                if (response.getStatusLine().getStatusCode() == 200) {
+//                    String resXml = EntityUtils.toString(response.getEntity());
+//                    return JSONObject.parseObject(json);
+//                } else {
+//                    throw new SimplePayException(APIEnum.FAILURE);
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//            throw new SimplePayException("system error!");
+//        }
+//
+//        return null;
+//    }
 }

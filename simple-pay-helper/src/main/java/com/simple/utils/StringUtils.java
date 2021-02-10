@@ -6,6 +6,9 @@ package com.simple.utils;
 public class StringUtils {
 
 
+    public static final String EMPYT = "";
+
+
     public static boolean isEmpty(String str){
         return str == null || str.trim().length() == 0;
     }

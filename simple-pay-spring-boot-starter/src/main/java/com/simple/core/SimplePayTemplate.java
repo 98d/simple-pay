@@ -41,24 +41,60 @@ public class SimplePayTemplate implements SimplePayOps{
     }
 
     @Override
+    public SimplePay applets() {
+        return this.terminal(TerminalConst.APPLETS);
+    }
+
+    @Override
+    public SimplePay wechatPay(String terminal){
+        return getSimplePay(PayMethod.WECHAT,terminal);
+    }
+
+    @Override
+    public SimplePay aliPay(String terminal){
+        return getSimplePay(PayMethod.ALI,terminal);
+    }
+
+    @Override
+    public SimpleAuth auth(String terminal) {
+        return new SimpleAuthProxy(terminal,simplePayMethodFactory);
+    }
+
+    @Override
+    public SimpleAuth appletsAuth() {
+        return auth(TerminalConst.APPLETS);
+    }
+
+    @Override
     public SimplePay getSimplePay(PayMethod method, String terminal){
-        SimplePayFactory simplePayFactory = simplePayMethodFactory.getFactory(method);
+        SimplePayFactory simplePayFactory = getFactory(method);
         if(simplePayFactory == null){
             return null;
         }
         return simplePayFactory.getSimplePay(terminal);
     }
 
-    @Override
-    public SimplePay getWechatPay(String terminal){
-        return getSimplePay(PayMethod.WECHAT,terminal);
+    /**
+     * 获取授权
+     * @param method
+     * @param terminal
+     * @return
+     */
+    public SimpleAuth getSimpleAuth(PayMethod method,String terminal){
+        SimplePayFactory simplePayFactory = getFactory(method);
+        if(simplePayFactory == null){
+            return null;
+        }
+        return simplePayFactory.getSimpleAuth(method,terminal);
     }
 
-    @Override
-    public SimplePay getAliPay(String terminal){
-        return getSimplePay(PayMethod.ALI,terminal);
+    /**
+     * 获取授权
+     * @param method
+     * @return
+     */
+    private SimplePayFactory getFactory(PayMethod method){
+        return simplePayMethodFactory.getFactory(method);
     }
-
-
 
 }

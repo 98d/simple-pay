@@ -1,17 +1,29 @@
 package com.simple.core.alipay;
 
+import com.simple.core.SimplePayBaseConfig;
+
 /**
  * Created by Jin.Z.J 2020/11/25
  */
-public class AliSimplePayConfig {
+public class AliSimplePayConfig extends SimplePayBaseConfig {
 
+    private Long id;
 
     private String appId;
     private String privateKey;
     private String aliPayPublicKey;
-    private String notifyUrl;
-    private String redirectUrl;
-    private String refundNotifyUrl;
+
+    private String appletsAppId;
+    private String appletsPrivateKey;
+    private String appletsAliPayPublicKey;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAppId() {
         return appId;
@@ -37,27 +49,27 @@ public class AliSimplePayConfig {
         this.aliPayPublicKey = aliPayPublicKey;
     }
 
-    public String getNotifyUrl() {
-        return notifyUrl;
+    public String getAppletsAppId() {
+        return appletsAppId;
     }
 
-    public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
+    public void setAppletsAppId(String appletsAppId) {
+        this.appletsAppId = appletsAppId;
     }
 
-    public String getRedirectUrl() {
-        return redirectUrl;
+    public String getAppletsPrivateKey() {
+        return appletsPrivateKey;
     }
 
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
+    public void setAppletsPrivateKey(String appletsPrivateKey) {
+        this.appletsPrivateKey = appletsPrivateKey;
     }
 
-    public String getRefundNotifyUrl() {
-        return refundNotifyUrl;
+    public String getAppletsAliPayPublicKey() {
+        return appletsAliPayPublicKey;
     }
 
-    public void setRefundNotifyUrl(String refundNotifyUrl) {
-        this.refundNotifyUrl = refundNotifyUrl;
+    public void setAppletsAliPayPublicKey(String appletsAliPayPublicKey) {
+        this.appletsAliPayPublicKey = appletsAliPayPublicKey;
     }
 }
